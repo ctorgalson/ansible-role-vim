@@ -6,7 +6,7 @@
     name: "{{ vim_removed_packages }}"
     state: absent
 
-- name: Check that the correct Vim and Vim-related packages are installed.
+- name: Install required Vim and Vim-related packages.
   package:
     name: "{{ vim_installed_packages }}"
     state: present
