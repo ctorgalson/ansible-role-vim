@@ -1,2 +1,12 @@
 ---
 # tasks file for ansible-role-vim
+
+- name: Remove unneeded Vim-related packages.
+  package:
+    name: "{{ vim_removed_packages }}"
+    state: absent
+
+- name: Check that the correct Vim and Vim-related packages are installed.
+  package:
+    name: "{{ vim_installed_packages }}"
+    state: present

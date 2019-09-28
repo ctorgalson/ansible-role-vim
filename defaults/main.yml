@@ -1,2 +1,9 @@
 ---
 # defaults file for ansible-role-vim
+
+vim_installed_packages:
+  - "vim"
+vim_removed_packages: []
+vim_user:
+  name: "lorem"
+  group: "lorem"
