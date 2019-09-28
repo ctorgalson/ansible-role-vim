@@ -1,0 +1,13 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: Install packages for testing.
+      package:
+        name:
+          - "vim-tiny"
+        state: present
+
+    - name: Create users for testing.
+      user:
+        name: "lorem"

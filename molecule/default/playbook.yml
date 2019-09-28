@@ -1,5 +1,8 @@
 ---
 - name: Converge
   hosts: all
+  vars:
+    vim_removed_packages:
+      - "vim-tiny"
   roles:
     - role: ansible-role-vim
