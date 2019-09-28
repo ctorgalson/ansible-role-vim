@@ -4,5 +4,7 @@
   vars:
     vim_removed_packages:
       - "vim-tiny"
+    vim_owner: "lorem"
+    vim_group: "lorem"
   roles:
     - role: ansible-role-vim
