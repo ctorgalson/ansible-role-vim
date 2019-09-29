@@ -1,0 +1,12 @@
+---
+# plugin removal tasks for ansible-role-vim.
+
+- name: Remove {{ plugin_data.type }} plugins.
+  file:
+    path: "{{ vim_plugin_parent_directory }}/{{ plugin_data.directory }}/{{ plugin }}"
+    state: absent
+  loop: "{{ plugin_data.list }}"
+  loop_control:
+    loop_var: plugin
+  tags:
+    - molecule-idempotence-notest

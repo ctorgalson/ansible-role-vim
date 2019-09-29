@@ -1,92 +1,35 @@
 ---
-# tasks file for ansible-role-vim
+# tasks file for ansible-role-vim.
 
-- name: Determine home directory.
-  set_fact:
-    vim_home_directory: "{{ (ansible_system == 'Darwin') | ternary('Users', 'home') }}"
+- name: Perform package install and removal for Vim and Vim plugin install.
+  include_tasks: "manage-packages.yml"
 
-- name: Determine user home directory.
-  set_fact:
-    vim_user_home_directory: "/{{ vim_home_directory }}/{{ vim_owner }}"
+- name: Perform setup tasks for Vim and Vim plugin install.
+  include_tasks: "setup.yml"
 
-- name: Determine Vim plugin parent directory.
-  set_fact:
-    vim_plugin_parent_directory: "{{ vim_user_home_directory }}/.vim/pack"
-
-- name: Determine Vim start plugin directory.
-  set_fact:
-    vim_pack_start_subdirectory: "{{ vim_pack_subdirectory }}/start"
-
-- name: Determine Vim opt plugin directory.
-  set_fact:
-    vim_pack_opt_subdirectory: "{{ vim_pack_subdirectory }}/opt"
-
-- name: Remove unneeded Vim-related packages.
-  package:
-    name: "{{ vim_removed_packages }}"
-    state: absent
-
-- name: Install required Vim and Vim-related packages.
-  package:
-    name: "{{ vim_installed_packages }}"
-    state: present
-
-- name: Prepare install directories.
-  file:
-    path: "{{ vim_plugin_parent_directory }}/{{ vim_directory }}"
-    state: directory
-    owner: "{{ vim_owner }}"
-    group: "{{ vim_group }}"
+- name: Peform Vim plugin installation.
+  include_tasks: "install-plugins.yml"
   loop:
-    - "{{ vim_pack_subdirectory }}"
-    - "{{ vim_pack_start_subdirectory }}"
-    - "{{ vim_pack_opt_subdirectory }}"
+    - list: "{{ vim_start_installed_plugins }}"
+      directory: "{{ vim_pack_start_subdirectory }}"
+      type: "start"
+    - list: "{{ vim_opt_installed_plugins }}"
+      directory: "{{ vim_pack_opt_subdirectory }}"
+      type: "opt"
   loop_control:
-    loop_var: vim_directory
+    loop_var: plugin_data
 
-- name: Install start plugins.
-  git:
-    repo: "{{ start_plugin.repo }}"
-    dest: "{{ vim_plugin_parent_directory }}/{{ vim_pack_start_subdirectory }}/{{ (start_plugin.repo | basename | splitext)[0] }}"
-    version: "{{ start_plugin.version | default('HEAD') }}"
-    clone: true
-  loop: "{{ vim_start_installed_plugins }}"
+- name: Perform Vim plugin removal.
+  include_tasks: "remove-plugins.yml"
+  loop:
+    - list: "{{ vim_start_removed_plugins }}"
+      directory: "{{ vim_pack_start_subdirectory }}"
+      type: "start"
+    - list: "{{ vim_opt_removed_plugins }}"
+      directory: "{{ vim_pack_opt_subdirectory }}"
+      type: "opt"
   loop_control:
-    loop_var: start_plugin
-  tags:
-    - molecule-idempotence-notest
-
-- name: Install opt plugins.
-  git:
-    repo: "{{ opt_plugin.repo }}"
-    dest: "{{ vim_plugin_parent_directory }}/{{ vim_pack_opt_subdirectory }}/{{ (opt_plugin.repo | basename | splitext)[0] }}"
-    version: "{{ opt_plugin.version | default('HEAD') }}"
-    clone: true
-  loop: "{{ vim_opt_installed_plugins }}"
-  loop_control:
-    loop_var: opt_plugin
-  tags:
-    - molecule-idempotence-notest
-
-- name: Remove start plugins.
-  file:
-    path: "{{ vim_plugin_parent_directory }}/{{ vim_pack_start_subdirectory }}/{{ plugin_directory }}"
-    state: absent
-  loop: "{{ vim_start_removed_plugins }}"
-  loop_control:
-    loop_var: plugin_directory
-  tags:
-    - molecule-idempotence-notest
-
-- name: Remove opt plugins.
-  file:
-    path: "{{ vim_plugin_parent_directory }}/{{ vim_pack_opt_subdirectory }}/{{ plugin_directory }}"
-    state: absent
-  loop: "{{ vim_opt_removed_plugins }}"
-  loop_control:
-    loop_var: plugin_directory
-  tags:
-    - molecule-idempotence-notest
+    loop_var: plugin_data
 
 - name: Make sure plugins have correct owner and group.
   file:
