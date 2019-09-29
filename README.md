@@ -1,5 +1,7 @@
 # Ansible Role Vim
 
+[![Build Status](https://travis-ci.com/ctorgalson/ansible-role-vim.svg?branch=master)](https://travis-ci.com/ctorgalson/ansible-role-vim)
+
 An Ansible role to install Vim and plugins on Linux and macOS.
 
 This role uses Vim 8's native package manager (see `:help packages`), so roles will be
