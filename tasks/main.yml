@@ -50,9 +50,11 @@
     dest: "{{ vim_plugin_parent_directory }}/{{ vim_pack_start_subdirectory }}/{{ (start_plugin.repo | basename | splitext)[0] }}"
     version: "{{ start_plugin.version | default('HEAD') }}"
     clone: true
-  loop: "{{ vim_start_plugins }}"
+  loop: "{{ vim_start_installed_plugins }}"
   loop_control:
     loop_var: start_plugin
+  tags:
+    - molecule-idempotence-notest
 
 - name: Install opt plugins.
   git:
@@ -60,9 +62,31 @@
     dest: "{{ vim_plugin_parent_directory }}/{{ vim_pack_opt_subdirectory }}/{{ (opt_plugin.repo | basename | splitext)[0] }}"
     version: "{{ opt_plugin.version | default('HEAD') }}"
     clone: true
-  loop: "{{ vim_opt_plugins }}"
+  loop: "{{ vim_opt_installed_plugins }}"
   loop_control:
     loop_var: opt_plugin
+  tags:
+    - molecule-idempotence-notest
+
+- name: Remove start plugins.
+  file:
+    path: "{{ vim_plugin_parent_directory }}/{{ vim_pack_start_subdirectory }}/{{ plugin_directory }}"
+    state: absent
+  loop: "{{ vim_start_removed_plugins }}"
+  loop_control:
+    loop_var: plugin_directory
+  tags:
+    - molecule-idempotence-notest
+
+- name: Remove opt plugins.
+  file:
+    path: "{{ vim_plugin_parent_directory }}/{{ vim_pack_opt_subdirectory }}/{{ plugin_directory }}"
+    state: absent
+  loop: "{{ vim_opt_removed_plugins }}"
+  loop_control:
+    loop_var: plugin_directory
+  tags:
+    - molecule-idempotence-notest
 
 - name: Make sure plugins have correct owner and group.
   file:

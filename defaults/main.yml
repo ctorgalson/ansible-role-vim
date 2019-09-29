@@ -7,9 +7,13 @@ vim_removed_packages: []
 # vim_owner: "lorem"
 # vim_group: "lorem"
 vim_pack_subdirectory: "ansible-managed"
-vim_start_plugins: []
+vim_start_installed_plugins: []
 # - repo: "https://github.com/scrooloose/nerdtree.git"
 #   version: "HEAD"
-vim_opt_plugins: []
+vim_opt_installed_plugins: []
 # - repo: "https://github.com/scrooloose/nerdtree.git"
 #   version: "HEAD"
+vim_start_removed_plugins: []
+# - nerdtree
+vim_opt_removed_plugins: []
+# - vdebug
