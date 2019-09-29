@@ -47,8 +47,9 @@ def test_vim_package_directories(host, owner, group, directory):
     ("lorem", "lorem"),
 ])
 @pytest.mark.parametrize("directory", [
+    "opt/vdebug",
     "start/lightline.vim",
-    "opt/nerdtree",
+    "start/vim-colors-solarized",
 ])
 def test_vim_installed_packages(host, owner, group, directory):
     p = "/home/{}/.vim/pack/ansible-managed/{}".format(owner, directory)

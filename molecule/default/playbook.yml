@@ -7,10 +7,9 @@
     vim_owner: "lorem"
     vim_group: "lorem"
     vim_start_plugins:
+      - repo: "https://github.com/altercation/vim-colors-solarized.git"
       - repo: "https://github.com/itchyny/lightline.vim.git"
-        version: "HEAD"
     vim_opt_plugins:
-      - repo: "https://github.com/scrooloose/nerdtree.git"
-        version: "HEAD"
+      - repo: "https://github.com/vim-vdebug/vdebug.git"
   roles:
     - role: ansible-role-vim
