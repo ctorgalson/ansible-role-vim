@@ -6,5 +6,11 @@
       - "vim-tiny"
     vim_owner: "lorem"
     vim_group: "lorem"
+    vim_start_plugins:
+      - repo: "https://github.com/itchyny/lightline.vim.git"
+        version: "HEAD"
+    vim_opt_plugins:
+      - repo: "https://github.com/scrooloose/nerdtree.git"
+        version: "HEAD"
   roles:
     - role: ansible-role-vim

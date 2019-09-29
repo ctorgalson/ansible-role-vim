@@ -5,6 +5,7 @@
     - name: Install packages for testing.
       package:
         name:
+          - "git"
           - "vim-tiny"
         state: present
 
