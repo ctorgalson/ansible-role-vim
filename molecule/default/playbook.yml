@@ -17,5 +17,7 @@
       - "nerdcommenter"
     vim_opt_removed_plugins:
       - "tabular"
+    vim_dotfiles:
+      - "{{ playbook_dir }}/files/dotfiles/.vimrc"
   roles:
     - role: ansible-role-vim

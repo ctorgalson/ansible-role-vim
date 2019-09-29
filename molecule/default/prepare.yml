@@ -12,3 +12,10 @@
     - name: Create users for testing.
       user:
         name: "lorem"
+
+    - name: Clone dotfiles repo for use in testing.
+      git:
+        repo: "https://github.com/mathiasbynens/dotfiles.git"
+        dest: "{{ playbook_dir }}/files/dotfiles"
+        recursive: true
+      delegate_to: localhost
