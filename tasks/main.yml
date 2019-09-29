@@ -9,6 +9,10 @@
   set_fact:
     vim_user_home_directory: "/{{ vim_home_directory }}/{{ vim_owner }}"
 
+- name: Determine Vim plugin parent directory.
+  set_fact:
+    vim_plugin_parent_directory: "{{ vim_user_home_directory }}/.vim/pack"
+
 - name: Determine Vim start plugin directory.
   set_fact:
     vim_pack_start_subdirectory: "{{ vim_pack_subdirectory }}/start"
@@ -29,7 +33,7 @@
 
 - name: Prepare install directories.
   file:
-    path: "{{ vim_user_home_directory }}/{{ vim_directory }}"
+    path: "{{ vim_plugin_parent_directory }}/{{ vim_directory }}"
     state: directory
     owner: "{{ vim_owner }}"
     group: "{{ vim_group }}"
@@ -43,7 +47,7 @@
 - name: Install start plugins.
   git:
     repo: "{{ start_plugin.repo }}"
-    dest: "{{ vim_user_home_directory }}/{{ vim_pack_start_subdirectory }}/{{ (start_plugin.repo | basename | splitext)[0] }}"
+    dest: "{{ vim_plugin_parent_directory }}/{{ vim_pack_start_subdirectory }}/{{ (start_plugin.repo | basename | splitext)[0] }}"
     version: "{{ start_plugin.version | default('HEAD') }}"
     clone: true
   loop: "{{ vim_start_plugins }}"
@@ -53,7 +57,7 @@
 - name: Install opt plugins.
   git:
     repo: "{{ opt_plugin.repo }}"
-    dest: "{{ vim_user_home_directory }}/{{ vim_pack_opt_subdirectory }}/{{ (opt_plugin.repo | basename | splitext)[0] }}"
+    dest: "{{ vim_plugin_parent_directory }}/{{ vim_pack_opt_subdirectory }}/{{ (opt_plugin.repo | basename | splitext)[0] }}"
     version: "{{ opt_plugin.version | default('HEAD') }}"
     clone: true
   loop: "{{ vim_opt_plugins }}"
@@ -62,7 +66,7 @@
 
 - name: Make sure plugins have correct owner and group.
   file:
-    path: "{{ vim_user_home_directory }}/{{ vim_pack_subdirectory }}"
+    path: "{{ vim_plugin_parent_directory }}/{{ vim_pack_subdirectory }}"
     owner: "{{ vim_owner }}"
     group: "{{ vim_group }}"
     recurse: true
