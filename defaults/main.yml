@@ -4,8 +4,8 @@
 vim_installed_packages:
   - "vim"
 vim_removed_packages: []
-# vim_owner: "lorem"
-# vim_group: "lorem"
+vim_owner: ""
+vim_group: ""
 vim_pack_subdirectory: "ansible-managed"
 vim_start_installed_plugins: []
 # - repo: "https://github.com/scrooloose/nerdtree.git"
@@ -17,3 +17,4 @@ vim_start_removed_plugins: []
 # - nerdtree
 vim_opt_removed_plugins: []
 # - vdebug
+vim_dotfiles: []

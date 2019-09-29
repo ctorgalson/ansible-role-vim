@@ -73,3 +73,18 @@ def test_vim_removed_packages(host, owner, group, directory):
     f = host.file(p)
 
     assert not f.exists
+
+
+@pytest.mark.parametrize("owner,group", [
+    ("lorem", "lorem"),
+])
+@pytest.mark.parametrize("file", [
+    ".vimrc",
+])
+def test_vim_dotfiles(host, owner, group, file):
+    f = host.file("/home/{}/{}".format(owner, file))
+
+    assert f.exists
+    assert f.is_file
+    assert f.user == owner
+    assert f.group == group
