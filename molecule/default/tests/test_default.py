@@ -59,3 +59,17 @@ def test_vim_installed_packages(host, owner, group, directory):
     assert f.is_directory
     assert f.user == owner
     assert f.group == group
+
+
+@pytest.mark.parametrize("owner,group", [
+    ("lorem", "lorem"),
+])
+@pytest.mark.parametrize("directory", [
+    "opt/tabular",
+    "start/nerdcommenter",
+])
+def test_vim_removed_packages(host, owner, group, directory):
+    p = "/home/{}/.vim/pack/ansible-managed/{}".format(owner, directory)
+    f = host.file(p)
+
+    assert not f.exists
