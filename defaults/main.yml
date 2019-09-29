@@ -17,3 +17,4 @@ vim_start_removed_plugins: []
 # - nerdtree
 vim_opt_removed_plugins: []
 # - vdebug
+vim_dotfiles: []

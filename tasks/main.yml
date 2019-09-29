@@ -7,6 +7,9 @@
 - name: Perform setup tasks for Vim and Vim plugin install.
   include_tasks: "setup.yml"
 
+- name: Perform dotfile installation for Vim.
+  include_tasks: "copy-dotfiles.yml"
+
 - name: Peform Vim plugin installation.
   include_tasks: "install-plugins.yml"
   loop:
