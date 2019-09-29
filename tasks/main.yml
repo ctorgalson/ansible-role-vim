@@ -9,6 +9,14 @@
   set_fact:
     vim_user_home_directory: "/{{ vim_home_directory }}/{{ vim_owner }}"
 
+- name: Determine Vim start plugin directory.
+  set_fact:
+    vim_pack_start_subdirectory: "{{ vim_pack_subdirectory }}/start"
+
+- name: Determine Vim opt plugin directory.
+  set_fact:
+    vim_pack_opt_subdirectory: "{{ vim_pack_subdirectory }}/opt"
+
 - name: Remove unneeded Vim-related packages.
   package:
     name: "{{ vim_removed_packages }}"
@@ -27,7 +35,35 @@
     group: "{{ vim_group }}"
   loop:
     - "{{ vim_pack_subdirectory }}"
-    - "{{ vim_pack_subdirectory }}/start"
-    - "{{ vim_pack_subdirectory }}/opt"
+    - "{{ vim_pack_start_subdirectory }}"
+    - "{{ vim_pack_opt_subdirectory }}"
   loop_control:
     loop_var: vim_directory
+
+- name: Install start plugins.
+  git:
+    repo: "{{ start_plugin.repo }}"
+    dest: "{{ vim_user_home_directory }}/{{ vim_pack_start_subdirectory }}/{{ (start_plugin.repo | basename | splitext)[0] }}"
+    version: "{{ start_plugin.version | default('HEAD') }}"
+    clone: true
+  loop: "{{ vim_start_plugins }}"
+  loop_control:
+    loop_var: start_plugin
+
+- name: Install opt plugins.
+  git:
+    repo: "{{ opt_plugin.repo }}"
+    dest: "{{ vim_user_home_directory }}/{{ vim_pack_opt_subdirectory }}/{{ (opt_plugin.repo | basename | splitext)[0] }}"
+    version: "{{ opt_plugin.version | default('HEAD') }}"
+    clone: true
+  loop: "{{ vim_opt_plugins }}"
+  loop_control:
+    loop_var: opt_plugin
+
+- name: Make sure plugins have correct owner and group.
+  file:
+    path: "{{ vim_user_home_directory }}/{{ vim_pack_subdirectory }}"
+    owner: "{{ vim_owner }}"
+    group: "{{ vim_group }}"
+    recurse: true
+  changed_when: false
