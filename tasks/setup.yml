@@ -1,6 +1,19 @@
 ---
 # setup tasks for ansible-role-vim.
 
+- name: Get Vim version.
+  shell: "set -o pipefail && vim --version | head -n1 | awk '{ print $5 }'"
+  args:
+    executable: "/bin/bash"
+    warn: false
+  register: vim_version_string
+  changed_when: false
+
+- name: Make sure it even makes sense to continue.
+  assert:
+    that: "{{ vim_version_string.stdout | version_compare('8.0', '>=') }}"
+    msg: "Vim does not support native package management in versions lower than 8.0."
+
 - name: Determine home directory.
   set_fact:
     vim_home_directory: "{{ (ansible_system == 'Darwin') | ternary('Users', 'home') }}"
