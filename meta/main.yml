@@ -6,6 +6,8 @@ galaxy_info:
 
   license: GPLv3
 
+  role_name: vim
+
   min_ansible_version: 2.8
 
   platforms:
