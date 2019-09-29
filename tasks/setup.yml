@@ -1,0 +1,35 @@
+---
+# setup tasks for ansible-role-vim.
+
+- name: Determine home directory.
+  set_fact:
+    vim_home_directory: "{{ (ansible_system == 'Darwin') | ternary('Users', 'home') }}"
+
+- name: Determine user home directory.
+  set_fact:
+    vim_user_home_directory: "/{{ vim_home_directory }}/{{ vim_owner }}"
+
+- name: Determine Vim plugin parent directory.
+  set_fact:
+    vim_plugin_parent_directory: "{{ vim_user_home_directory }}/.vim/pack"
+
+- name: Determine Vim start plugin directory.
+  set_fact:
+    vim_pack_start_subdirectory: "{{ vim_pack_subdirectory }}/start"
+
+- name: Determine Vim opt plugin directory.
+  set_fact:
+    vim_pack_opt_subdirectory: "{{ vim_pack_subdirectory }}/opt"
+
+- name: Prepare install directories.
+  file:
+    path: "{{ vim_plugin_parent_directory }}/{{ vim_directory }}"
+    state: directory
+    owner: "{{ vim_owner }}"
+    group: "{{ vim_group }}"
+  loop:
+    - "{{ vim_pack_subdirectory }}"
+    - "{{ vim_pack_start_subdirectory }}"
+    - "{{ vim_pack_opt_subdirectory }}"
+  loop_control:
+    loop_var: vim_directory
