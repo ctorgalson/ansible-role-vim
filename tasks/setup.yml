@@ -11,7 +11,7 @@
 
 - name: Make sure it even makes sense to continue.
   assert:
-    that: "{{ vim_version_string.stdout | version('8.0', '>=') }}"
+    that: "{{ vim_version_string.stdout is version('8.0', '>=') }}"
     msg: "Vim does not support native package management in versions lower than 8.0."
 
 - name: Determine home directory.
