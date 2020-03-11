@@ -18,7 +18,7 @@ rm -rf "$venv_path" && virtualenv "$venv_path"
 source "$venv_activate"
 
 # Install packages as needed.
-pip install "testinfra" "docker" "molecule"
+pip install "docker" "flake8" "molecule" "testinfra" "yamllint"
 
 # Deactviate virtualenv within this process.
 "$venv_deactivate"
