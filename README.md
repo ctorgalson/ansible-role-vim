@@ -13,7 +13,7 @@ will be installed by default to the following locations:
 Note that, unlike Pathogen or other Vim plugin managers, Vim's native package
 management does **not** automatically create helptags. This role expects to
 **be** the package manager (i.e. it expects to be run every time a plugin is
-added or remove), and so manages helptag creation.
+added or removed), and so manages helptag creation.
 
 If your use case doesn't involve using the role for _all_ Vim plugin management,
 you'll need to manage helptags using a method like one of the following:
