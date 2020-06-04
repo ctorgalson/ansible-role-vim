@@ -19,7 +19,6 @@ If your use case doesn't involve using the role for _all_ Vim plugin management,
 you'll need to manage helptags using a method like one of the following:
 
 - run `:helptags ALL` from inside Vim,
-- [use Git hooks](),
 - script it (on cron or another trigger like [Git hooks](https://tbaggery.com/2011/08/08/effortless-ctags-with-git.html))
   something like this role does it: `vim -c 'helptags ~/.vim/pack' -c q`
 
