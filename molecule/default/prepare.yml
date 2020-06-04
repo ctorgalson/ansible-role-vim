@@ -11,7 +11,7 @@
 
     - name: Create users for testing.
       user:
-        name: "lorem"
+        name: "molecule"
 
     - name: Clone dotfiles repo for use in testing.
       git:

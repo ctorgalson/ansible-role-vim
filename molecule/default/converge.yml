@@ -4,8 +4,8 @@
   vars:
     vim_removed_packages:
       - "vim-tiny"
-    vim_owner: "lorem"
-    vim_group: "lorem"
+    vim_owner: "molecule"
+    vim_group: "molecule"
     vim_start_installed_plugins:
       - repo: "https://github.com/altercation/vim-colors-solarized.git"
       - repo: "https://github.com/itchyny/lightline.vim.git"
