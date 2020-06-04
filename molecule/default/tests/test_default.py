@@ -27,7 +27,7 @@ def test_installed_vim_packages(host, package):
 
 
 @pytest.mark.parametrize("owner,group", [
-    ("lorem", "lorem"),
+    ("molecule", "molecule"),
 ])
 @pytest.mark.parametrize("directory", [
     ".vim/pack/ansible-managed",
@@ -44,14 +44,14 @@ def test_vim_package_directories(host, owner, group, directory):
 
 
 @pytest.mark.parametrize("owner,group", [
-    ("lorem", "lorem"),
+    ("molecule", "molecule"),
 ])
 @pytest.mark.parametrize("directory", [
     "opt/vdebug",
     "start/lightline.vim",
     "start/vim-colors-solarized",
 ])
-def test_vim_installed_packages(host, owner, group, directory):
+def test_vim_installed_plugins(host, owner, group, directory):
     p = "/home/{}/.vim/pack/ansible-managed/{}".format(owner, directory)
     f = host.file(p)
 
@@ -62,13 +62,13 @@ def test_vim_installed_packages(host, owner, group, directory):
 
 
 @pytest.mark.parametrize("owner,group", [
-    ("lorem", "lorem"),
+    ("molecule", "molecule"),
 ])
 @pytest.mark.parametrize("directory", [
     "opt/tabular",
     "start/nerdcommenter",
 ])
-def test_vim_removed_packages(host, owner, group, directory):
+def test_vim_removed_plugins(host, owner, group, directory):
     p = "/home/{}/.vim/pack/ansible-managed/{}".format(owner, directory)
     f = host.file(p)
 
@@ -76,7 +76,7 @@ def test_vim_removed_packages(host, owner, group, directory):
 
 
 @pytest.mark.parametrize("owner,group", [
-    ("lorem", "lorem"),
+    ("molecule", "molecule"),
 ])
 @pytest.mark.parametrize("file", [
     ".vimrc",
@@ -88,3 +88,21 @@ def test_vim_dotfiles(host, owner, group, file):
     assert f.is_file
     assert f.user == owner
     assert f.group == group
+
+
+@pytest.mark.parametrize("owner,group", [
+  ("molecule", "molecule"),
+])
+@pytest.mark.parametrize("tag", [
+  "lightline",
+  "solarized",
+  "Vdebug",
+])
+def test_vim_helptags(host, owner, group, tag):
+    f = host.file("/home/{}/.vim/pack/tags".format(owner))
+
+    assert f.exists
+    assert f.is_file
+    assert f.user == owner
+    assert f.group == group
+    assert tag in f.content_string
