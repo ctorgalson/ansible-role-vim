@@ -41,3 +41,6 @@
     group: "{{ vim_group }}"
     recurse: true
   changed_when: false
+
+- name: Generated helptags for plugins.
+  include_tasks: "create-helptags.yml"
