@@ -4,11 +4,24 @@
 
 An Ansible role to install Vim and plugins on Linux and macOS.
 
-This role uses Vim 8's native package manager (see `:help packages`), so roles will be
-installed by default to the following locations:
+This role uses Vim 8's native package manager (see `:help packages`), so roles
+will be installed by default to the following locations:
 
 - `~/.vim/pack/ansible-managed/start`
 - `~/.vim/pack/ansible-managed/opt`
+
+Note that, unlike Pathogen or other Vim plugin managers, Vim's native package
+management does **not** automatically create helptags. This role expects to
+**be** the package manager (i.e. it expects to be run every time a plugin is
+added or remove), and so manages helptag creation.
+
+If your use case doesn't involve using the role for _all_ Vim plugin management,
+you'll need to manage helptags using a method like one of the following:
+
+- run `:helptags ALL` from inside Vim,
+- [use Git hooks](),
+- script it (on cron or another trigger like [Git hooks](https://tbaggery.com/2011/08/08/effortless-ctags-with-git.html))
+  something like this role does it: `vim -c 'helptags ~/.vim/pack' -c q`
 
 ## Requirements
 
@@ -45,8 +58,8 @@ The following variables are used in the role. See also Example Playbook
       vars:
         vim_removed_packages:
           - "vim-tiny"
-        vim_owner: "lorem"
-        vim_group: "lorem"
+        vim_owner: "molecule"
+        vim_group: "molecule"
         vim_start_installed_plugins:
           - repo: "https://github.com/altercation/vim-colors-solarized.git"
           - repo: "https://github.com/itchyny/lightline.vim.git"
