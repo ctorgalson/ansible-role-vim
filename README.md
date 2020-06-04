@@ -1,6 +1,6 @@
 # Ansible Role Vim
 
-![](https://github.com/ctorgalson/ansible-role-github-release/workflows/Molecule%20Test/badge.svg)
+![](https://github.com/ctorgalson/ansible-role-vim/workflows/Molecule%20Test/badge.svg)
 
 An Ansible role to install Vim and plugins on Linux and macOS.
 
