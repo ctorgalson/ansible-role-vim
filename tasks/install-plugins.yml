@@ -1,12 +1,28 @@
 ---
 # plugin installation tasks for ansible-role-vim.
 
-- name: Install {{ plugin_data.type }} plugins.
+- name: Clone {{ plugin_data.type }} plugins into place.
   git:
-    repo: "{{ plugin.repo }}"
-    dest: "{{ vim_plugin_parent_directory }}/{{ plugin_data.directory }}/{{ (plugin.repo | basename | splitext)[0] }}"
-    version: "{{ plugin.version | default('HEAD') }}"
     clone: true
+    dest: "{{ vim_plugin_parent_directory }}/{{ plugin_data.directory }}/{{ (plugin.repo | basename | splitext)[0] }}"
+    # When updating, do so even if there are local changes to the repo (this
+    # happens when we generate helptags for Vim).
+    force: true
+    repo: "{{ plugin.repo }}"
+    # Update when needed (in practice, this will happen only when 'version' is
+    # set to 'master' or 'HEAD').
+    update: true
+    version: "{{ plugin.version | default('HEAD') }}"
+  loop: "{{ plugin_data.list }}"
+  loop_control:
+    loop_var: plugin
+  tags:
+    - molecule-idempotence-notest
+
+- name: Create/update helptags for {{ plugin_data.type }} plugins.
+  shell: "vim -c 'helptags .' -c q"
+  args:
+    chdir: "{{ vim_plugin_parent_directory }}/{{ plugin_data.directory }}/{{ (plugin.repo | basename | splitext)[0] }}/doc"
   loop: "{{ plugin_data.list }}"
   loop_control:
     loop_var: plugin
