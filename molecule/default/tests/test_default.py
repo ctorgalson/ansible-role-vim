@@ -91,18 +91,39 @@ def test_vim_dotfiles(host, owner, group, file):
 
 
 @pytest.mark.parametrize("owner,group", [
-  ("molecule", "molecule"),
+    ("molecule", "molecule"),
 ])
-@pytest.mark.parametrize("tag", [
-  "lightline",
-  "solarized",
-  "Vdebug",
+@pytest.mark.parametrize("type,dir,helptags", [
+  ("start", "lightline.vim", "lightline.txt"),
+  ("start", "vim-colors-solarized", "solarized.txt"),
+  ("opt", "vdebug", "Vdebug.txt"),
 ])
-def test_vim_helptags(host, owner, group, tag):
-    f = host.file("/home/{}/.vim/pack/tags".format(owner))
+def test_vim_helptags(host, type, dir, helptags, owner, group):
+    """
+    The best way to test this would be to actually run :h pluginname in Vim
+    using the method from this brilliant answer at vi.stackexchange.com.
+    https://vi.stackexchange.com/q/8835/#8836.
+
+    That way we could run e.g.:
+
+    vim -c 'set t_ti= t_te= nomore' -c 'h lightline' -c 'qa!'
+
+    This would return stdout out that we can use to analyze. But for whatever
+    reason sudo -u molecule /bin/bash -c ' ... ' (Testinfra's only sudo method)
+    doesn't actually work for this.
+
+    As a result, we're just going to make sure a file named tags exists in the
+    various plugins' doc directories, and that the file includes the plugin's
+    name.
+    """
+
+    c = '/home/molecule/.vim/pack/ansible-managed/{}/{}/doc/tags'.format(
+        type, dir)
+
+    f = host.file(c)
 
     assert f.exists
     assert f.is_file
     assert f.user == owner
     assert f.group == group
-    assert tag in f.content_string
+    assert helptags in f.content_string
