@@ -20,9 +20,12 @@
     - molecule-idempotence-notest
 
 - name: Create/update helptags for {{ plugin_data.type }} plugins.
-  shell: "vim -c 'helptags .' -c q"
+  shell: |
+    if [ -d doc ]; then
+      cd doc && vim -c 'helptags .' -c q
+    fi
   args:
-    chdir: "{{ vim_plugin_parent_directory }}/{{ plugin_data.directory }}/{{ (plugin.repo | basename | splitext)[0] }}/doc"
+    chdir: "{{ vim_plugin_parent_directory }}/{{ plugin_data.directory }}/{{ (plugin.repo | basename | splitext)[0] }}"
   loop: "{{ plugin_data.list }}"
   loop_control:
     loop_var: plugin
