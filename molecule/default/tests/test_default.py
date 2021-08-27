@@ -94,9 +94,7 @@ def test_vim_dotfiles(host, owner, group, file):
     ("molecule", "molecule"),
 ])
 @pytest.mark.parametrize("type,dir,helptags", [
-  ("start", "lightline.vim", "lightline.txt"),
-  ("start", "vim-colors-solarized", "solarized.txt"),
-  ("opt", "vdebug", "Vdebug.txt"),
+    ("opt", "vdebug", "Vdebug.txt"),
 ])
 def test_vim_helptags(host, type, dir, helptags, owner, group):
     """

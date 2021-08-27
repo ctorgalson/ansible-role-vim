@@ -6,17 +6,24 @@
       - "vim-tiny"
     vim_owner: "molecule"
     vim_group: "molecule"
-    vim_start_installed_plugins:
+    vim_installed_plugins:
       - repo: "https://github.com/altercation/vim-colors-solarized.git"
+        type: "start"
       - repo: "https://github.com/itchyny/lightline.vim.git"
+        type: "start"
       - repo: "https://github.com/scrooloose/nerdcommenter.git"
-    vim_opt_installed_plugins:
+        type: "start"
+      - repo: "https://github.com/skammer/vim-css-color.git"
+        type: "start"
       - repo: "https://github.com/vim-vdebug/vdebug.git"
+        type: "opt"
       - repo: "https://github.com/godlygeek/tabular.git"
-    vim_start_removed_plugins:
-      - "nerdcommenter"
-    vim_opt_removed_plugins:
-      - "tabular"
+        type: "opt"
+    vim_removed_plugins:
+      - directory: "nerdcommenter"
+        type: "start"
+      - directory: "tabular"
+        type: "opt"
     vim_dotfiles:
       - "{{ playbook_dir }}/files/dotfiles/.vimrc"
   roles:
