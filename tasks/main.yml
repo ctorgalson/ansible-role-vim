@@ -11,28 +11,20 @@
   include_tasks: "copy-dotfiles.yml"
 
 - name: Peform Vim plugin installation.
-  include_tasks: "install-plugins.yml"
-  loop:
-    - list: "{{ vim_start_installed_plugins }}"
-      directory: "{{ vim_pack_start_subdirectory }}"
-      type: "start"
-    - list: "{{ vim_opt_installed_plugins }}"
-      directory: "{{ vim_pack_opt_subdirectory }}"
-      type: "opt"
+  include_tasks: "install-plugin.yml"
+  loop: "{{ vim_installed_plugins }}"
   loop_control:
-    loop_var: plugin_data
+    loop_var: vim_plugin
+  tags:
+    - molecule-idempotence-notest
 
 - name: Perform Vim plugin removal.
-  include_tasks: "remove-plugins.yml"
-  loop:
-    - list: "{{ vim_start_removed_plugins }}"
-      directory: "{{ vim_pack_start_subdirectory }}"
-      type: "start"
-    - list: "{{ vim_opt_removed_plugins }}"
-      directory: "{{ vim_pack_opt_subdirectory }}"
-      type: "opt"
+  include_tasks: "remove-plugin.yml"
+  loop: "{{ vim_removed_plugins }}"
   loop_control:
-    loop_var: plugin_data
+    loop_var: vim_plugin
+  tags:
+    - molecule-idempotence-notest
 
 - name: Make sure plugins have correct owner and group.
   file:
