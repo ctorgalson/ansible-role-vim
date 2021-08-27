@@ -41,10 +41,8 @@ The following variables are used in the role. See also Example Playbook
 | `vim_owner`                   | `""`              | The system user to install Vim and/or associated plugins for. |
 | `vim_group`                   | `""`              | The group of the user specificed in `vim_owner`. |
 | `vim_pack_subdirectory`       | `ansible-managed` | The name of the directory to place plugins installed by this role into the default creates e.g. `~/.vim/pack/ansible-managed/start` and `~/.vim/pack/ansible-managed/opt`. |
-| `vim_start_installed_plugins` | `[]`              | The list of plugins to install to `~/.vim/pack/ansible-managed/start`--see `:help packages` for details on what this means. Should contain a `repo` property and (optionally) a `version` property as used by Ansible's Git module. |
-| `vim_opt_installed_plugins`   | `[]`              | The list of plugins to install to `~/.vim/pack/ansible-managed/opt`--see `:help packages` for details on what this means. Should contain a `repo` property and (optionally) a `version` property as used by Ansible's Git module. |
-| `vim_start_removed_plugins`   | `[]`              | A list of directory names to remove from `~/.vim/pack/ansible-managed/start`. |
-| `vim_opt_removed_plugins`     | `[]`              | A list of directory names to remove from `~/.vim/pack/ansible-managed/opt`. |
+| `vim_installed_plugins`       | `[]`              | The list of plugins to install to `~/.vim/pack/ansible-managed/start`--see `:help packages` for details on what this means. Should contain a `repo` property, a `type` property set to either 'start' or 'opt', and (optionally) a `version` property as used by Ansible's Git module. |
+| `vim_removed_plugins`         | `[]`              | A list of plugins to remove from `~/.vim/pack/ansible-managed/{opt,start}`. Each should contain a directory property set to the directory name of the plugin, and a `type` property set to either 'start' or 'opt'. |
 | `vim_dotfiles`                | `[]`              | A list of local vim-related dotfiles to install to `~/`. |
 
 ## Example Playbook
@@ -59,17 +57,24 @@ The following variables are used in the role. See also Example Playbook
           - "vim-tiny"
         vim_owner: "molecule"
         vim_group: "molecule"
-        vim_start_installed_plugins:
+        vim_installed_plugins:
           - repo: "https://github.com/altercation/vim-colors-solarized.git"
+            type: "start"
           - repo: "https://github.com/itchyny/lightline.vim.git"
+            type: "start"
           - repo: "https://github.com/scrooloose/nerdcommenter.git"
-        vim_opt_installed_plugins:
+            type: "start"
+          - repo: "https://github.com/skammer/vim-css-color.git"
+            type: "start"
           - repo: "https://github.com/vim-vdebug/vdebug.git"
+            type: "opt"
           - repo: "https://github.com/godlygeek/tabular.git"
-        vim_start_removed_plugins:
-          - "nerdcommenter"
-        vim_opt_removed_plugins:
-          - "tabular"
+            type: "opt"
+        vim_removed_plugins:
+          - directory: "nerdcommenter"
+            type: "start"
+          - directory: "tabular"
+            type: "opt"
         vim_dotfiles:
           - "{{ playbook_dir }}/files/dotfiles/.vimrc"
       roles:
