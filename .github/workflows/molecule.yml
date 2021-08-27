@@ -1,4 +1,6 @@
 ---
+name: Molecule Test
+
 on: push
 
 jobs:
