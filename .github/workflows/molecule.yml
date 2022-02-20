@@ -12,7 +12,7 @@ jobs:
     runs-on:
       - ubuntu-latest
     strategy:
-      fail-false: false
+      fail-fast: false
       matrix:
         scenario:
           # Default is current latest LTS version.
