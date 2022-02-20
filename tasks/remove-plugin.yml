@@ -12,9 +12,3 @@
     path: "{{ vim_plugin_path }}"
     state: absent
   register: vim_plugin_remove
-
-- name: Debug plugin remove.
-  command: ls -hal
-  args:
-    chdir: "{{ vim_plugin_parent_directory }}/{{ vim_pack_subdirectory }}/{{ vim_plugin.type }}"
-  register: removed_list

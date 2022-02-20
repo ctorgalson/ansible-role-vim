@@ -7,6 +7,7 @@
     dest: "{{ vim_user_home_directory }}/{{ dotfile | basename }}"
     owner: "{{ vim_owner }}"
     group: "{{ vim_group }}"
+    mode: "{{ vim_file_mode | default('644') }}"
   loop: "{{ vim_dotfiles }}"
   loop_control:
     loop_var: dotfile
