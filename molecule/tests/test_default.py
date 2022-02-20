@@ -48,6 +48,7 @@ def test_vim_package_directories(host, owner, group, directory):
 ])
 @pytest.mark.parametrize("directory", [
     "opt/vdebug",
+    "start/vim-airline",
     "start/lightline.vim",
     "start/vim-colors-solarized",
 ])
@@ -95,6 +96,7 @@ def test_vim_dotfiles(host, owner, group, file):
 ])
 @pytest.mark.parametrize("type,dir,helptags", [
     ("opt", "vdebug", "Vdebug.txt"),
+    ("start", "vim-airline", "airline.txt"),
 ])
 def test_vim_helptags(host, type, dir, helptags, owner, group):
     """

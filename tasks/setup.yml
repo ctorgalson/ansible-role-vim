@@ -40,6 +40,7 @@
     state: directory
     owner: "{{ vim_owner }}"
     group: "{{ vim_group }}"
+    mode: "{{ vim_dir_mode | default('755') }}"
   loop:
     - "{{ vim_pack_subdirectory }}"
     - "{{ vim_pack_start_subdirectory }}"

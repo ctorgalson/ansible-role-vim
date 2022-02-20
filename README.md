@@ -1,6 +1,6 @@
 # Ansible Role Vim
 
-![](https://github.com/ctorgalson/ansible-role-vim/workflows/Molecule%20Test/badge.svg)
+[![Molecule Test](https://github.com/ctorgalson/ansible-role-vim/actions/workflows/molecule.yml/badge.svg)](https://github.com/ctorgalson/ansible-role-vim/actions/workflows/molecule.yml)
 
 An Ansible role to install Vim and plugins on Linux and macOS.
 
@@ -40,6 +40,8 @@ The following variables are used in the role. See also Example Playbook
 | `vim_removed_packages`        | `[]`              | A list of packages to remove (e.g. on Ubuntu, it might be preferable to remove `vim-tiny`). |
 | `vim_owner`                   | `""`              | The system user to install Vim and/or associated plugins for. |
 | `vim_group`                   | `""`              | The group of the user specificed in `vim_owner`. |
+| `vim_file_mode`               | `'644'`           | The permissions string to set on files copied or created by the role. |
+| `vim_dir_mode`                | `'755'`           | The permissions string to set on directories copied or created by the role. |
 | `vim_pack_subdirectory`       | `ansible-managed` | The name of the directory to place plugins installed by this role into the default creates e.g. `~/.vim/pack/ansible-managed/start` and `~/.vim/pack/ansible-managed/opt`. |
 | `vim_installed_plugins`       | `[]`              | The list of plugins to install to `~/.vim/pack/ansible-managed/start`--see `:help packages` for details on what this means. Should contain a `repo` property, a `type` property set to either 'start' or 'opt', and (optionally) a `version` property as used by Ansible's Git module. |
 | `vim_removed_plugins`         | `[]`              | A list of plugins to remove from `~/.vim/pack/ansible-managed/{opt,start}`. Each should contain a directory property set to the directory name of the plugin, and a `type` property set to either 'start' or 'opt'. |

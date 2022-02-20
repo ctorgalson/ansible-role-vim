@@ -1,14 +1,33 @@
 ---
 name: Molecule Test
 
-on: push
+on:
+  pull_request:
+    branches:
+      master
+  workflow_dispatch:
 
 jobs:
   molecule:
     runs-on:
-      - ubuntu-20.04
+      - ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario:
+          # Default is current latest LTS version.
+          - "default"
+          - "18.04"
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
         with:
           path: ${{ github.repository }}
-      - uses: gofrolist/molecule-action@v2
+      - name: Molecule
+        uses: gofrolist/molecule-action@v2
+        with:
+          molecule_options: --debug
+          molecule_command: test
+          molecule_args: --scenario-name ${{ matrix.scenario }}
+        env:
+          ANSIBLE_FORCE_COLOR: '1'

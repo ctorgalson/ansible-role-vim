@@ -2,4 +2,4 @@
 __pycache__
 *.log
 *.pyc
-molecule/*/files/*
+molecule/files/*

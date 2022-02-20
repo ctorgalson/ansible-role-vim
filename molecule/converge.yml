@@ -7,6 +7,8 @@
     vim_owner: "molecule"
     vim_group: "molecule"
     vim_installed_plugins:
+      - repo: "https://github.com/vim-airline/vim-airline.git"
+        type: "start"
       - repo: "https://github.com/altercation/vim-colors-solarized.git"
         type: "start"
       - repo: "https://github.com/itchyny/lightline.vim.git"
