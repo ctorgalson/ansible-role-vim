@@ -96,6 +96,7 @@ def test_vim_dotfiles(host, owner, group, file):
 ])
 @pytest.mark.parametrize("type,dir,helptags", [
     ("opt", "vdebug", "Vdebug.txt"),
+    ("start", "vim-airline", "airline.txt"),
 ])
 def test_vim_helptags(host, type, dir, helptags, owner, group):
     """
