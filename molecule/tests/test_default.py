@@ -48,6 +48,7 @@ def test_vim_package_directories(host, owner, group, directory):
 ])
 @pytest.mark.parametrize("directory", [
     "opt/vdebug",
+    "start/vim-airline",
     "start/lightline.vim",
     "start/vim-colors-solarized",
 ])

@@ -9,7 +9,7 @@ driver:
   name: docker
 platforms:
   - name: instance
-    image: geerlingguy/docker-ubuntu2004-ansible
+    image: geerlingguy/docker-ubuntu1804-ansible
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
@@ -20,7 +20,7 @@ provisioner:
     prepare: ../prepare.yml
     converge: ../converge.yml
 scenario:
-  name: default
+  name: "18.04"
 verifier:
   name: testinfra
   directory: ../tests/
