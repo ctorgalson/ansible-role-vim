@@ -6,27 +6,41 @@
       - "vim-tiny"
     vim_owner: "molecule"
     vim_group: "molecule"
-    vim_installed_plugins:
-      - repo: "https://github.com/vim-airline/vim-airline.git"
-        type: "start"
-      - repo: "https://github.com/altercation/vim-colors-solarized.git"
-        type: "start"
-      - repo: "https://github.com/itchyny/lightline.vim.git"
-        type: "start"
-      - repo: "https://github.com/scrooloose/nerdcommenter.git"
-        type: "start"
-      - repo: "https://github.com/skammer/vim-css-color.git"
-        type: "start"
-      - repo: "https://github.com/vim-vdebug/vdebug.git"
-        type: "opt"
-      - repo: "https://github.com/godlygeek/tabular.git"
-        type: "opt"
-    vim_removed_plugins:
-      - directory: "nerdcommenter"
-        type: "start"
-      - directory: "tabular"
-        type: "opt"
     vim_dotfiles:
       - "{{ playbook_dir }}/files/dotfiles/.vimrc"
-  roles:
-    - role: ansible-role-vim
+  tasks:
+    - name: Run role once.
+      include_role:
+        name: "ansible-role-vim"
+      vars:
+        vim_installed_plugins:
+          - repo: "https://github.com/vim-airline/vim-airline.git"
+            type: "start"
+          - repo: "https://github.com/altercation/vim-colors-solarized.git"
+            type: "start"
+          - repo: "https://github.com/itchyny/lightline.vim.git"
+            type: "start"
+          - repo: "https://github.com/scrooloose/nerdcommenter.git"
+            type: "start"
+          - repo: "https://github.com/skammer/vim-css-color.git"
+            type: "start"
+          - repo: "https://github.com/vim-vdebug/vdebug.git"
+            type: "start"
+          - repo: "https://github.com/godlygeek/tabular.git"
+            type: "opt"
+        vim_removed_plugins:
+          - directory: "nerdcommenter"
+            type: "start"
+          - directory: "tabular"
+            type: "opt"
+
+    - name: Run role a second time.
+      include_role:
+        name: "ansible-role-vim"
+      vars:
+        vim_installed_plugins:
+          - repo: "https://github.com/vim-vdebug/vdebug.git"
+            type: "opt"
+        vim_removed_plugins:
+          - directory: "vdebug"
+            type: "start"
