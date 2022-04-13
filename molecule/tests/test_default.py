@@ -68,6 +68,7 @@ def test_vim_installed_plugins(host, owner, group, directory):
 @pytest.mark.parametrize("directory", [
     "opt/tabular",
     "start/nerdcommenter",
+    "start/vdebug",
 ])
 def test_vim_removed_plugins(host, owner, group, directory):
     p = "/home/{}/.vim/pack/ansible-managed/{}".format(owner, directory)
