@@ -2,7 +2,7 @@
 # dotfiles tasks for ansible-role-vim.
 
 - name: Copy dotfiles into place.
-  copy:
+  ansible.builtin.copy:
     src: "{{ dotfile }}"
     dest: "{{ vim_user_home_directory }}/{{ dotfile | basename }}"
     owner: "{{ vim_owner }}"

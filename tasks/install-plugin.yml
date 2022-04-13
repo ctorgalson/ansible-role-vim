@@ -4,30 +4,30 @@
 # Installs and generates helpdocs for one plugin.
 
 - name: Determine plugin name.
-  set_fact:
+  ansible.builtin.set_fact:
     vim_plugin_name: "{{ (vim_plugin.repo | basename | splitext)[0] }}"
 
 - name: Determine plugin install directory.
-  set_fact:
+  ansible.builtin.set_fact:
     vim_plugin_dest: "{{ vim_plugin_parent_directory }}/{{ vim_pack_subdirectory }}/{{ vim_plugin.type|default('start') }}/{{ vim_plugin_name }}"
 
 - name: Create a path to search for '{{ vim_plugin_name }}' helptags.
-  set_fact:
+  ansible.builtin.set_fact:
     vim_plugin_doc: "{{ vim_plugin_dest }}/doc"
 
 - name: Find out if the plugin already exists.
-  stat:
+  ansible.builtin.stat:
     path: "{{ vim_plugin_dest }}"
   register: vim_plugin_dest_dir
 
 - name: Find out if the '{{ vim_plugin_name }}' plugin contains a doc/ directory.
-  stat:
+  ansible.builtin.stat:
     path: "{{ vim_plugin_doc }}"
   register: vim_plugin_doc_dir
   changed_when: false
 
 - name: Clone '{{ vim_plugin_name }}' plugin into place.
-  git:
+  ansible.builtin.git:
     clone: true
     dest: "{{ vim_plugin_dest }}"
     # Force only when there's a previously existing doc/ directory in the plugin
@@ -48,13 +48,13 @@
     - not vim_plugin_doc_dir.stat.exists
 
 - name: Check if the newly installed '{{ vim_plugin_name }}' plugin includes a doc/ directory.
-  stat:
+  ansible.builtin.stat:
     path: "{{ vim_plugin_doc }}"
   register: vim_plugin_doc_dir_installed
   changed_when: false
 
 - name: Create/update '{{ vim_plugin_name }}' plugin helptags.
-  command: "vim -c 'helptags . ' -c q"
+  ansible.builtin.command: "vim -c 'helptags . ' -c q"
   args:
     chdir: "{{ vim_plugin_doc }}"
   register: vim_plugin_doc_helptags
