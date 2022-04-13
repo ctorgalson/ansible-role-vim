@@ -2,7 +2,7 @@
 # setup tasks for ansible-role-vim.
 
 - name: Get Vim version.
-  shell: "set -o pipefail && vim --version | head -n1 | awk '{ print $5 }'"
+  ansible.builtin.shell: "set -o pipefail && vim --version | head -n1 | awk '{ print $5 }'"
   args:
     executable: "/bin/bash"
     warn: false
@@ -10,32 +10,32 @@
   changed_when: false
 
 - name: Make sure it even makes sense to continue.
-  assert:
+  ansible.builtin.assert:
     that: "{{ vim_version_string.stdout is version('8.0', '>=') }}"
     msg: "Vim does not support native package management in versions lower than 8.0."
 
 - name: Determine home directory.
-  set_fact:
+  ansible.builtin.set_fact:
     vim_home_directory: "{{ (ansible_system == 'Darwin') | ternary('Users', 'home') }}"
 
 - name: Determine user home directory.
-  set_fact:
+  ansible.builtin.set_fact:
     vim_user_home_directory: "/{{ vim_home_directory }}/{{ vim_owner }}"
 
 - name: Determine Vim plugin parent directory.
-  set_fact:
+  ansible.builtin.set_fact:
     vim_plugin_parent_directory: "{{ vim_user_home_directory }}/.vim/pack"
 
 - name: Determine Vim start plugin directory.
-  set_fact:
+  ansible.builtin.set_fact:
     vim_pack_start_subdirectory: "{{ vim_pack_subdirectory }}/start"
 
 - name: Determine Vim opt plugin directory.
-  set_fact:
+  ansible.builtin.set_fact:
     vim_pack_opt_subdirectory: "{{ vim_pack_subdirectory }}/opt"
 
 - name: Prepare install directories.
-  file:
+  ansible.builtin.file:
     path: "{{ vim_plugin_parent_directory }}/{{ vim_directory }}"
     state: directory
     owner: "{{ vim_owner }}"

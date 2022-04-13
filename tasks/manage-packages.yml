@@ -2,11 +2,11 @@
 # package-related tasks for ansible-role-vim.
 
 - name: Remove unneeded Vim-related packages.
-  package:
+  ansible.builtin.package:
     name: "{{ vim_removed_packages }}"
     state: absent
 
 - name: Install required Vim and Vim-related packages.
-  package:
+  ansible.builtin.package:
     name: "{{ vim_installed_packages }}"
     state: present

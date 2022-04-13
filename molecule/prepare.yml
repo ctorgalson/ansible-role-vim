@@ -3,7 +3,7 @@
   hosts: all
   tasks:
     - name: Install packages for testing.
-      package:
+      ansible.builtin.package:
         name:
           - "git"
           - "vim-tiny"
@@ -14,7 +14,7 @@
         name: "molecule"
 
     - name: Clone dotfiles repo for use in testing.
-      git:
+      ansible.builtin.git:
         repo: "https://github.com/mathiasbynens/dotfiles.git"
         dest: "{{ playbook_dir }}/files/dotfiles"
         recursive: true

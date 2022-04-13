@@ -2,16 +2,16 @@
 # tasks file for ansible-role-vim.
 
 - name: Perform package install and removal for Vim and Vim plugin install.
-  include_tasks: "manage-packages.yml"
+  ansible.builtin.include_tasks: "manage-packages.yml"
 
 - name: Perform setup tasks for Vim and Vim plugin install.
-  include_tasks: "setup.yml"
+  ansible.builtin.include_tasks: "setup.yml"
 
 - name: Perform dotfile installation for Vim.
-  include_tasks: "copy-dotfiles.yml"
+  ansible.builtin.include_tasks: "copy-dotfiles.yml"
 
 - name: Peform Vim plugin installation.
-  include_tasks: "install-plugin.yml"
+  ansible.builtin.include_tasks: "install-plugin.yml"
   loop: "{{ vim_installed_plugins }}"
   loop_control:
     loop_var: vim_plugin
@@ -19,7 +19,7 @@
     - molecule-idempotence-notest
 
 - name: Perform Vim plugin removal.
-  include_tasks: "remove-plugin.yml"
+  ansible.builtin.include_tasks: "remove-plugin.yml"
   loop: "{{ vim_removed_plugins }}"
   loop_control:
     loop_var: vim_plugin
@@ -27,7 +27,7 @@
     - molecule-idempotence-notest
 
 - name: Make sure plugins have correct owner and group.
-  file:
+  ansible.builtin.file:
     path: "{{ vim_plugin_parent_directory }}/{{ vim_pack_subdirectory }}"
     owner: "{{ vim_owner }}"
     group: "{{ vim_group }}"
