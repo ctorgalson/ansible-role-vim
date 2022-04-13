@@ -10,7 +10,7 @@
       - "{{ playbook_dir }}/files/dotfiles/.vimrc"
   tasks:
     - name: Run role once.
-      include_role:
+      ansible.builtin.include_role:
         name: "ansible-role-vim"
       vars:
         vim_installed_plugins:
@@ -35,7 +35,7 @@
             type: "opt"
 
     - name: Run role a second time.
-      include_role:
+      ansible.builtin.include_role:
         name: "ansible-role-vim"
       vars:
         vim_installed_plugins:
