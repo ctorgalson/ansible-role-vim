@@ -1,0 +1,35 @@
+---
+# Vim plugin helptags building for ansible-role-vim.
+#
+# Generates helpdocs for one plugin.
+
+- name: Determine plugin name.
+  ansible.builtin.set_fact:
+    vim_plugin_name: "{{ (vim_plugin_helpdoc.repo | basename | splitext)[0] }}"
+
+- name: Determine plugin install directory.
+  ansible.builtin.set_fact:
+    vim_plugin_dest: "{{ vim_plugin_parent_directory }}/{{ vim_pack_subdirectory }}/{{ vim_plugin_helpdoc.type|default('start') }}/{{ vim_plugin_name }}"
+
+- name: Create a path to search for '{{ vim_plugin_name }}' helptags.
+  ansible.builtin.set_fact:
+    vim_plugin_doc: "{{ vim_plugin_dest }}/doc"
+
+- name: Check if the '{{ vim_plugin_name }}' plugin includes a doc/ directory.
+  ansible.builtin.stat:
+    path: "{{ vim_plugin_doc }}"
+  register: vim_plugin_doc_dir_installed
+  when: 'vim_plugin_name not in vim_removed_plugins'
+  changed_when: false
+
+- name: Create/update '{{ vim_plugin_name }}' plugin helptags in '{{ vim_plugin_doc }}'.
+  ansible.builtin.command: "vim -c 'helptags . ' -c q"
+  args:
+    chdir: "{{ vim_plugin_doc }}"
+  become: true
+  become_user: "{{ vim_owner }}"
+  register: vim_plugin_doc_helptags
+  when:
+    - "vim_plugin_doc_dir_installed.stat.exists"
+    - "vim_plugin_name not in vim_removed_plugins"
+  changed_when: false
