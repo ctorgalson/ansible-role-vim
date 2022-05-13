@@ -36,6 +36,8 @@
     repo: "{{ vim_plugin.repo }}"
     update: true
     version: "{{ vim_plugin.version | default('HEAD') }}"
+  become: true
+  become_user: "{{ vim_owner }}"
   register: vim_plugin_clone
   # Mark this task changed only when a) it actually changed, AND b) the plugin
   # directory already existed prior to this task running, AND c) the doc/
@@ -57,6 +59,8 @@
   ansible.builtin.command: "vim -c 'helptags . ' -c q"
   args:
     chdir: "{{ vim_plugin_doc }}"
+  become: true
+  become_user: "{{ vim_owner }}"
   register: vim_plugin_doc_helptags
   when:
     - vim_plugin_doc_dir_installed.stat.exists

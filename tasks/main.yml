@@ -25,11 +25,3 @@
     loop_var: vim_plugin
   tags:
     - molecule-idempotence-notest
-
-- name: Make sure plugins have correct owner and group.
-  ansible.builtin.file:
-    path: "{{ vim_plugin_parent_directory }}/{{ vim_pack_subdirectory }}"
-    owner: "{{ vim_owner }}"
-    group: "{{ vim_group }}"
-    recurse: true
-  changed_when: false
