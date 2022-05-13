@@ -30,4 +30,4 @@ jobs:
           molecule_command: test
         env:
           ANSIBLE_FORCE_COLOR: '1'
-          MOLECULE_IMAGE: geerlingguy/docker-${{ matrix.image }}-ansible
+          MOLECULE_IMAGE: ${{ matrix.image }}
