@@ -23,13 +23,13 @@ provisioner:
 scenario:
   name: default
   test_sequence:
-    - create
+    #- create
     - prepare
     - converge
     #- idempotence
     #- side_effect
     - verify
-    - cleanup
+    #- cleanup
     - destroy
 verifier:
   name: testinfra
