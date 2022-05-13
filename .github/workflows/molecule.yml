@@ -14,10 +14,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        scenario:
-          # Default is current latest LTS version.
-          - "default"
-          - "18.04"
+        image:
+          - "ubuntu1804"
+          - "ubuntu2004"
+          - "ubuntu2204"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -28,6 +28,6 @@ jobs:
         with:
           molecule_options: --debug
           molecule_command: test
-          molecule_args: --scenario-name ${{ matrix.scenario }}
         env:
           ANSIBLE_FORCE_COLOR: '1'
+          MOLECULE_IMAGE: ${{ matrix.image }} 
