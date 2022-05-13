@@ -9,7 +9,8 @@ driver:
   name: docker
 platforms:
   - name: instance
-    image: ${MOLECULE_IMAGE:-"geerlingguy/docker-ubuntu2004-ansible"}
+    # image: ${MOLECULE_IMAGE:-"geerlingguy/docker-ubuntu2004-ansible"}
+    image: geerlingguy/docker-${MOLECULE_IMAGE:-"ubuntu2004"}-ansible
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
