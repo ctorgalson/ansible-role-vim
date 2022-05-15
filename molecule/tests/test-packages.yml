@@ -1,0 +1,30 @@
+---
+# Tests installed and removed packages.
+
+- name: "Test | check for removed package."
+  block:
+    - name: "Check properties of vim-tiny package."
+      ansible.builtin.stat:
+        path: "/usr/bin/vim.tiny"
+      register: rg__vim_tiny_path
+      failed_when: false
+
+    - name: "Verify nonexistence of vim-tiny package."
+      assert:
+        that:
+          - "not rg__vim_tiny_path.stat.exists"
+        fail_msg: "The vim-tiny package is still present."
+
+- name: "Test | check for installed package."
+  block:
+    - name: "Check properties of vim package."
+      ansible.builtin.stat:
+        path: "/usr/bin/vim"
+      register: rg__vim_path
+      failed_when: false
+
+    - name: "Verify existence of vim package."
+      assert:
+        that:
+          - "rg__vim_path.stat.exists"
+        fail_msg: "The vim package is not present."

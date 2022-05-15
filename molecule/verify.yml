@@ -1,0 +1,63 @@
+---
+# Runs Ansible tests.
+- name: "Verify Vim package, plugin, and helptags install and configuration."
+  hosts: all
+  tasks:
+    - name: "Test | run package tests."
+      ansible.builtin.include_tasks: "{{ playbook_dir }}/tests/test-packages.yml"
+
+    - name: "Test | prepare and run directory tests."
+      block:
+        - name: "Test | prepare home directory var."
+          ansible.builtin.set_fact:
+            fact__home_directory: "/home/molecule"
+
+        - name: "Test | prepare vars for directory tests."
+          ansible.builtin.set_fact:
+            fact__vim_directories:
+              # Top-level directories.
+              - path: "{{ fact__home_directory }}/.vim/pack/ansible-managed"
+                state: present
+                type: "directory"
+                mode: "0755"
+              - path: "{{ fact__home_directory }}/.vim/pack/ansible-managed/start"
+                state: present
+                type: "directory"
+                mode: "0755"
+              - path: "{{ fact__home_directory }}/.vim/pack/ansible-managed/opt"
+                state: present
+                type: "directory"
+                mode: "0755"
+              # Installed plugins.
+              - path: "{{ fact__home_directory }}/.vim/pack/ansible-managed/opt/vdebug"
+                state: present
+                type: "plugin"
+                mode: "0775"
+              - path: "{{ fact__home_directory }}/.vim/pack/ansible-managed/start/vim-airline"
+                state: present
+                type: "plugin"
+                mode: "0775"
+              - path: "{{ fact__home_directory }}/.vim/pack/ansible-managed/start/lightline.vim"
+                state: present
+                type: "plugin"
+                mode: "0775"
+              - path: "{{ fact__home_directory }}/.vim/pack/ansible-managed/start/vim-colors-solarized"
+                state: present
+                type: "plugin"
+                mode: "0775"
+              # Removed plugins.
+              - path: "{{ fact__home_directory }}/.vim/pack/ansible-managed/opt/tabular"
+                state: absent
+                type: "plugin"
+              - path: "{{ fact__home_directory }}/.vim/pack/ansible-managed/start/nerdcommenter"
+                state: absent
+                type: "plugin"
+              - path: "{{ fact__home_directory }}/.vim/pack/ansible-managed/start/vdebug"
+                state: absent
+                type: "plugin"
+
+        - name: "Test | run directory tests."
+          ansible.builtin.include_tasks: "{{ playbook_dir }}/tests/test-directories.yml"
+          loop: "{{ fact__vim_directories }}"
+          loop_control:
+            loop_var: dir
