@@ -23,7 +23,7 @@
   changed_when: false
 
 - name: Create/update '{{ vim_plugin_name }}' plugin helptags in '{{ vim_plugin_doc }}'.
-  ansible.builtin.command: "vim -c 'helptags . ' -c q"
+  ansible.builtin.command: "vim -u NONE -c 'helptags . ' -c q"
   args:
     chdir: "{{ vim_plugin_doc }}"
   become: true
