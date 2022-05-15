@@ -25,6 +25,6 @@ test:molecule:
     matrix:
       - MOLECULE_DISTRO: ubuntu2204
       - MOLECULE_DISTRO: ubuntu2004
-      - MOLECULE_DISTRO: debian11
+      - MOLECULE_DISTRO: ubuntu1804
   script:
     - molecule test -- -vvv --skip-tags=no-ci
