@@ -1,15 +1,15 @@
 ---
 # Vim plugin installation for ansible-role-vim.
 #
-# Installs and generates helpdocs for one plugin.
+# Installs one plugin.
 
 - name: Determine plugin name.
   ansible.builtin.set_fact:
-    vim_plugin_name: "{{ (vim_plugin.repo | basename | splitext)[0] }}"
+    vim_plugin_name: "{{ (vim_plugin_install.repo | basename | splitext)[0] }}"
 
 - name: Determine plugin install directory.
   ansible.builtin.set_fact:
-    vim_plugin_dest: "{{ vim_plugin_parent_directory }}/{{ vim_pack_subdirectory }}/{{ vim_plugin.type|default('start') }}/{{ vim_plugin_name }}"
+    vim_plugin_dest: "{{ vim_plugin_parent_directory }}/{{ vim_pack_subdirectory }}/{{ vim_plugin_install.type|default('start') }}/{{ vim_plugin_name }}"
 
 - name: Create a path to search for '{{ vim_plugin_name }}' helptags.
   ansible.builtin.set_fact:
@@ -33,9 +33,11 @@
     # Force only when there's a previously existing doc/ directory in the plugin
     # since Ansible will interpret this as local changes to the repo.
     force: "{{ vim_plugin_doc_dir.stat.exists }}"
-    repo: "{{ vim_plugin.repo }}"
+    repo: "{{ vim_plugin_install.repo }}"
     update: true
-    version: "{{ vim_plugin.version | default('HEAD') }}"
+    version: "{{ vim_plugin_install.version | default('HEAD') }}"
+  become: true
+  become_user: "{{ vim_owner }}"
   register: vim_plugin_clone
   # Mark this task changed only when a) it actually changed, AND b) the plugin
   # directory already existed prior to this task running, AND c) the doc/
@@ -46,18 +48,3 @@
     - vim_plugin_clone.changed
     - vim_plugin_dest_dir.stat.exists
     - not vim_plugin_doc_dir.stat.exists
-
-- name: Check if the newly installed '{{ vim_plugin_name }}' plugin includes a doc/ directory.
-  ansible.builtin.stat:
-    path: "{{ vim_plugin_doc }}"
-  register: vim_plugin_doc_dir_installed
-  changed_when: false
-
-- name: Create/update '{{ vim_plugin_name }}' plugin helptags.
-  ansible.builtin.command: "vim -c 'helptags . ' -c q"
-  args:
-    chdir: "{{ vim_plugin_doc }}"
-  register: vim_plugin_doc_helptags
-  when:
-    - vim_plugin_doc_dir_installed.stat.exists
-  changed_when: false

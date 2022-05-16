@@ -1,26 +1,31 @@
 ---
 dependency:
   name: galaxy
-lint: |
-  yamllint -d "{ignore: .venv}" .
-  ansible-lint defaults files meta molecule tasks
-  flake8 molecule
 driver:
   name: docker
 platforms:
   - name: instance
-    image: geerlingguy/docker-ubuntu2004-ansible
+    image: geerlingguy/docker-${MOLECULE_IMAGE:-ubuntu2004}-ansible
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     privileged: true
+    pre_build_image: true
 provisioner:
   name: ansible
   playbooks:
     prepare: ../prepare.yml
     converge: ../converge.yml
+    verify: ../verify.yml
 scenario:
   name: default
+  test_sequence:
+    - create
+    - prepare
+    - converge
+    #- idempotence
+    - verify
+    - destroy
 verifier:
-  name: testinfra
+  name: ansible
   directory: ../tests/

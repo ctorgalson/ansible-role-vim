@@ -1,0 +1,38 @@
+---
+# Tests for role-created/managed directories.
+
+- name: "Test | check role-created/removed plugins and directories."
+  block:
+    - name: "Set the plugin directory name."
+      ansible.builtin.set_fact:
+        dir_name: "{{ dir.path|basename }}"
+
+    - name: "Check the properties of the '{{ dir.path }}' {{ dir.type }}."
+      ansible.builtin.stat:
+        path: "{{ dir.path }}"
+      register: rg__dir_path
+
+    - name: "Verify the '{{ dir_name }}' {{ dir.type }} is {{ dir.state }}."
+      assert:
+        that:
+          - "(rg__dir_path.stat.exists and dir.state == 'present') or (not rg__dir_path.stat.exists and dir.state == 'absent')"
+        fail_msg: "The '{{ dir_name }}' {{ dir.type }} was not {{ dir.state }}, or it was not a directory."
+
+    - name: "Verify that '{{ dir.path }}' is a directory."
+      assert:
+        that: "rg__dir_path.stat.isdir"
+        fail_msg: "The {{ dir.type }}  '{{ dir_name }}' exists but is not a directory."
+      when: "rg__dir_path.stat.exists and dir.state == 'present'"
+
+    - name: "Verify other properties of the '{{ dir_name }}' {{ dir.type }}."
+      assert:
+        that:
+          - "rg__dir_path.stat.pw_name == fact__vim_owner"
+          - "rg__dir_path.stat.gr_name == fact__vim_owner"
+          - "rg__dir_path.stat.mode == dir.mode"
+        fail_msg: >
+          The owner, group, or mode of the '{{ dir_name }}' {{ dir.type }} was 
+          incorrect. Found {{ rg__dir_path.stat.pw_name }} (owner),
+          {{ rg__dir_path.stat.gr_name }} (group), and
+          {{ rg__dir_path.stat.mode }} (mode).
+      when: "rg__dir_path.stat.exists and dir.state == 'present'"

@@ -1,0 +1,93 @@
+---
+# Runs Ansible tests.
+- name: "Verify Vim package, plugin, and helptags install and configuration."
+  hosts: all
+  tasks:
+    - name: "Test | prepare user name for tests."
+      ansible.builtin.set_fact:
+        fact__vim_owner: "molecule"
+
+    - name: "Test | prepare home directory var for tests."
+      ansible.builtin.set_fact:
+        fact__vim_home_directory: "/home/{{ fact__vim_owner }}"
+
+    - name: "Test | prepare package, file, directory, and plugin vars for tests."
+      ansible.builtin.set_fact:
+        fact__vim_packages:
+          - name: "vim-tiny"
+            path: "/usr/bin/vim.tiny"
+            state: absent
+          - name: "vim"
+            path: "/usr/bin/vim"
+            state: present
+        fact__vim_config_files:
+          - path: "{{ fact__vim_home_directory }}/.vimrc"
+            state: present
+            mode: "0644"
+        fact__vim_directories:
+          - path: "{{ fact__vim_home_directory }}/.vim/pack/ansible-managed"
+            state: present
+            type: "directory"
+            mode: "0755"
+          - path: "{{ fact__vim_home_directory }}/.vim/pack/ansible-managed/start"
+            state: present
+            type: "directory"
+            mode: "0755"
+          - path: "{{ fact__vim_home_directory }}/.vim/pack/ansible-managed/opt"
+            state: present
+            type: "directory"
+            mode: "0755"
+        fact__vim_plugins:
+          # Installed plugins.
+          - path: "{{ fact__vim_home_directory }}/.vim/pack/ansible-managed/opt/vdebug"
+            state: present
+            type: "plugin"
+            mode: "0775"
+          - path: "{{ fact__vim_home_directory }}/.vim/pack/ansible-managed/start/vim-airline"
+            state: present
+            type: "plugin"
+            mode: "0775"
+          - path: "{{ fact__vim_home_directory }}/.vim/pack/ansible-managed/start/lightline.vim"
+            state: present
+            type: "plugin"
+            mode: "0775"
+          - path: "{{ fact__vim_home_directory }}/.vim/pack/ansible-managed/start/vim-colors-solarized"
+            state: present
+            type: "plugin"
+            mode: "0775"
+          # Removed plugins.
+          - path: "{{ fact__vim_home_directory }}/.vim/pack/ansible-managed/opt/tabular"
+            state: absent
+            type: "plugin"
+          - path: "{{ fact__vim_home_directory }}/.vim/pack/ansible-managed/start/nerdcommenter"
+            state: absent
+            type: "plugin"
+          - path: "{{ fact__vim_home_directory }}/.vim/pack/ansible-managed/start/vdebug"
+            state: absent
+            type: "plugin"
+
+    - name: "Test | run package tests."
+      ansible.builtin.include_tasks: "{{ playbook_dir }}/tests/test-packages.yml"
+      loop: "{{ fact__vim_packages }}"
+      loop_control:
+        loop_var: package
+
+    - name: "Test | run config file tests."
+      ansible.builtin.include_tasks: "{{ playbook_dir }}/tests/test-config-files.yml"
+      loop: "{{ fact__vim_config_files }}"
+      loop_control:
+        loop_var: config_file
+
+    - name: "Test | prepare and run directory tests."
+      block:
+        - name: "Test | run directory tests."
+          ansible.builtin.include_tasks: "{{ playbook_dir }}/tests/test-directories.yml"
+          loop: "{{ fact__vim_directories + fact__vim_plugins }}"
+          loop_control:
+            loop_var: dir
+
+    - name: "Run helptags tests."
+      ansible.builtin.include_tasks: "{{ playbook_dir }}/tests/test-helptags.yml"
+      loop: "{{ fact__vim_plugins|selectattr('state', 'match', 'present') }}"
+      loop_control:
+        loop_var: plugin

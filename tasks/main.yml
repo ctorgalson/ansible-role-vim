@@ -10,26 +10,20 @@
 - name: Perform dotfile installation for Vim.
   ansible.builtin.include_tasks: "copy-dotfiles.yml"
 
-- name: Peform Vim plugin installation.
+- name: Perform Vim plugin installation.
   ansible.builtin.include_tasks: "install-plugin.yml"
   loop: "{{ vim_installed_plugins }}"
   loop_control:
-    loop_var: vim_plugin
-  tags:
-    - molecule-idempotence-notest
+    loop_var: vim_plugin_install
+
+- name: Perform Vim plugin helpdoc build.
+  ansible.builtin.include_tasks: "build-helpdocs.yml"
+  loop: "{{ vim_installed_plugins }}"
+  loop_control:
+    loop_var: vim_plugin_helpdoc
 
 - name: Perform Vim plugin removal.
   ansible.builtin.include_tasks: "remove-plugin.yml"
   loop: "{{ vim_removed_plugins }}"
   loop_control:
-    loop_var: vim_plugin
-  tags:
-    - molecule-idempotence-notest
-
-- name: Make sure plugins have correct owner and group.
-  ansible.builtin.file:
-    path: "{{ vim_plugin_parent_directory }}/{{ vim_pack_subdirectory }}"
-    owner: "{{ vim_owner }}"
-    group: "{{ vim_group }}"
-    recurse: true
-  changed_when: false
+    loop_var: vim_plugin_remove

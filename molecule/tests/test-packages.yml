@@ -1,0 +1,17 @@
+---
+# Tests installed and removed packages.
+
+- name: "Test | check that the '{{ package.name }}' is {{ package.state }}."
+  block:
+    - name: "Check properties of '{{ package.name }}' package."
+      ansible.builtin.stat:
+        path: "{{ package.path }}"
+      register: rg__package_path
+      failed_when: false
+
+    - name: "Verify that the '{{ package.name }}' package is {{ package.state }}."
+      assert:
+        that: >
+          (rg__package_path.stat.exists and package.state == 'present') or
+          (not rg__package_path.stat.exists and package.state == 'absent')
+        fail_msg: "The package '{{ package.name }} is not {{ package.state }}"

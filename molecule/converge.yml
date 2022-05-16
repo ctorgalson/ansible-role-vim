@@ -31,6 +31,8 @@
         vim_removed_plugins:
           - directory: "nerdcommenter"
             type: "start"
+          - directory: "vdebug"
+            type: "start"
           - directory: "tabular"
             type: "opt"
 

@@ -3,11 +3,12 @@
   hosts: all
   tasks:
     - name: Install packages for testing.
-      ansible.builtin.package:
+      ansible.builtin.apt:
         name:
           - "git"
           - "vim-tiny"
         state: present
+        update_cache: true
 
     - name: Create users for testing.
       user:

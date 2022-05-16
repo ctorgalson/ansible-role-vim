@@ -3,11 +3,11 @@
 #
 # Removes a single plugin.
 
-- name: Determine '{{ vim_plugin.directory }}' plugin install directory.
+- name: Determine '{{ vim_plugin_remove.directory }}' plugin install directory.
   ansible.builtin.set_fact:
-    vim_plugin_path: "{{ vim_plugin_parent_directory }}/{{ vim_pack_subdirectory }}/{{ vim_plugin.type }}/{{ vim_plugin.directory }}"
+    vim_plugin_path: "{{ vim_plugin_parent_directory }}/{{ vim_pack_subdirectory }}/{{ vim_plugin_remove.type }}/{{ vim_plugin_remove.directory }}"
 
-- name: Remove '{{ vim_plugin.directory }}' plugin.
+- name: Remove '{{ vim_plugin_remove.directory }}' plugin.
   ansible.builtin.file:
     path: "{{ vim_plugin_path }}"
     state: absent
