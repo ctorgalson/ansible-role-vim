@@ -1,0 +1,32 @@
+---
+# Tests that vim config files have been correctly copied.
+
+- name: "Test | check for config file."
+  block:
+    - name: "Set the file name."
+      ansible.builtin.set_fact:
+        config_file_name: "{{ config_file.path|basename }}"
+
+    - name: "Collect info about the config file."
+      ansible.builtin.stat:
+        path: "{{ config_file.path }}"
+      register: rg__config_file
+
+    - name: "Verify that '{{ config_file_name }}' is {{ config_file.state }}."
+      assert:
+        that: >
+          (rg__config_file.stat.exists and config_file.state == 'present') or
+          (not rg__config_file.stat.exists and config_file.state == 'absent')
+        fail_msg: "The config file '{{ config_file_name }}' is not {{ config_file.state }}."
+
+    - name: "Verify owner, group, and mode of '{{ config_file_name }}'."
+      assert:
+        that:
+          - "rg__config_file.stat.pw_name == fact__vim_owner"
+          - "rg__config_file.stat.gr_name == fact__vim_owner"
+          - "rg__config_file.stat.mode == config_file.mode"
+        fail_msg: >
+          The owner, group, or mode of the '{{ config_file }}' file was
+          incorrect. Found {{ rg__config_file.stat.pw_name }} (owner),
+          {{ rg__config_file.stat.gr_name }} (group), and
+          {{ rg__config_file.stat.mode }} (mode).
