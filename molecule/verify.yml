@@ -14,7 +14,7 @@
     - name: "Test | prepare plugin dir mode for tests."
       ansible.builtin.set_fact:
         fact__plugin_dir_mode: "{{ (ansible_distribution_version == '22.04')|ternary('0755', '0775') }}"
-        fact__helptags_mode: "{{ (ansible_distribution_version == '22.04')|ternary('0644', '0664' }}"
+        fact__helptags_mode: "{{ (ansible_distribution_version == '22.04')|ternary('0644', '0664') }}"
 
     - name: "Test | prepare package, file, directory, and plugin vars for tests."
       ansible.builtin.set_fact:
