@@ -23,9 +23,9 @@
         that:
           - "rg__plugin_tags.stat.pw_name == fact__vim_owner"
           - "rg__plugin_tags.stat.gr_name == fact__vim_owner"
-          - "rg__plugin_tags.stat.mode == '0664'"
+          - "rg__plugin_tags.stat.mode == fact__helptags_mode"
         fail_msg: >
           The owner, group, or mode of the '{{ plugin_name }}' plugin helptags
-          file was incorrect. Found {{ rg__plugin_tags.stat.pw_name }} (owner),
-          {{ rg__plugin_tags.stat.gr_name }} (group), and
-          {{ rg__plugin_tags.stat.mode }} (mode).
+          file was incorrect. Found owner '{{ rg__plugin_tags.stat.pw_name }}' ({{ fact__vim_owner }}),
+          group '{{ rg__plugin_tags.stat.gr_name }}' ({{ fact__vim_owner }}), and
+          mode '{{ rg__plugin_tags.stat.mode }}' ({{ fact__helptags_mode }}).

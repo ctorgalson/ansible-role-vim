@@ -29,10 +29,10 @@
         that:
           - "rg__dir_path.stat.pw_name == fact__vim_owner"
           - "rg__dir_path.stat.gr_name == fact__vim_owner"
-          - "rg__dir_path.stat.mode == dir.mode"
+          - "rg__dir_path.stat.mode == fact__plugin_dir_mode"
         fail_msg: >
-          The owner, group, or mode of the '{{ dir_name }}' {{ dir.type }} was 
-          incorrect. Found {{ rg__dir_path.stat.pw_name }} (owner),
-          {{ rg__dir_path.stat.gr_name }} (group), and
-          {{ rg__dir_path.stat.mode }} (mode).
+          The owner, group, or mode of the '{{ dir_name }}' {{ dir.type }} was
+          incorrect. Found owner '{{ rg__dir_path.stat.pw_name }}' ({{ fact__vim_owner }}),
+          group '{{ rg__dir_path.stat.gr_name }}' ({{ fact__vim_owner }}), and
+          mode '{{ rg__dir_path.stat.mode }}' ({{ fact__plugin_dir_mode }}).
       when: "rg__dir_path.stat.exists and dir.state == 'present'"
