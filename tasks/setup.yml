@@ -2,7 +2,7 @@
 # setup tasks for ansible-role-vim.
 
 - name: Get Vim version.
-  ansible.builtin.shell: "set -o pipefail && vim --version | head -n1 | awk '{ print $5 }'"
+  ansible.builtin.shell: "set -o pipefail && (vim --version | head -n1 | awk '{ print $5 }') || test $? -eq 141"
   args:
     executable: "/bin/bash"
     warn: false
