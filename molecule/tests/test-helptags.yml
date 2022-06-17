@@ -18,14 +18,12 @@
         that: "rg__plugin_tags.stat.exists"
         fail_msg: "No helptags file was found for the '{{ plugin_name }}' plugin."
 
-    - name: "Verify owner, group, and mode of '{{ plugin_name }}' plugin helptags file."
+    - name: "Verify owner and group of '{{ plugin_name }}' plugin helptags file."
       assert:
         that:
           - "rg__plugin_tags.stat.pw_name == fact__vim_owner"
           - "rg__plugin_tags.stat.gr_name == fact__vim_owner"
-          - "rg__plugin_tags.stat.mode == fact__helptags_mode"
         fail_msg: >
-          The owner, group, or mode of the '{{ plugin_name }}' plugin helptags
+          The owner or group of the '{{ plugin_name }}' plugin helptags
           file was incorrect. Found owner '{{ rg__plugin_tags.stat.pw_name }}' ({{ fact__vim_owner }}),
-          group '{{ rg__plugin_tags.stat.gr_name }}' ({{ fact__vim_owner }}), and
-          mode '{{ rg__plugin_tags.stat.mode }}' ({{ fact__helptags_mode }}).
+          and group '{{ rg__plugin_tags.stat.gr_name }}' ({{ fact__vim_owner }}).

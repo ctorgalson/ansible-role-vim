@@ -19,14 +19,12 @@
           (not rg__config_file.stat.exists and config_file.state == 'absent')
         fail_msg: "The config file '{{ config_file_name }}' is not {{ config_file.state }}."
 
-    - name: "Verify owner, group, and mode of '{{ config_file_name }}'."
+    - name: "Verify owner and group of '{{ config_file_name }}'."
       assert:
         that:
           - "rg__config_file.stat.pw_name == fact__vim_owner"
           - "rg__config_file.stat.gr_name == fact__vim_owner"
-          - "rg__config_file.stat.mode == config_file.mode"
         fail_msg: >
-          The owner, group, or mode of the '{{ config_file }}' file was
+          The owner or group of the '{{ config_file }}' file was
           incorrect. Found {{ rg__config_file.stat.pw_name }} (owner),
-          {{ rg__config_file.stat.gr_name }} (group), and
-          {{ rg__config_file.stat.mode }} (mode).
+          {{ rg__config_file.stat.gr_name }} (group).

@@ -11,11 +11,6 @@
       ansible.builtin.set_fact:
         fact__vim_home_directory: "/home/{{ fact__vim_owner }}"
 
-    - name: "Test | prepare plugin dir mode for tests."
-      ansible.builtin.set_fact:
-        fact__plugin_dir_mode: "{{ (ansible_distribution_version == '22.04')|ternary('0755', '0775') }}"
-        fact__helptags_mode: "{{ (ansible_distribution_version == '22.04')|ternary('0644', '0664') }}"
-
     - name: "Test | prepare package, file, directory, and plugin vars for tests."
       ansible.builtin.set_fact:
         fact__vim_packages:
@@ -28,20 +23,16 @@
         fact__vim_config_files:
           - path: "{{ fact__vim_home_directory }}/.vimrc"
             state: present
-            mode: "0644"
         fact__vim_directories:
           - path: "{{ fact__vim_home_directory }}/.vim/pack/ansible-managed"
             state: present
             type: "directory"
-            mode: "0755"
           - path: "{{ fact__vim_home_directory }}/.vim/pack/ansible-managed/start"
             state: present
             type: "directory"
-            mode: "0755"
           - path: "{{ fact__vim_home_directory }}/.vim/pack/ansible-managed/opt"
             state: present
             type: "directory"
-            mode: "0755"
         fact__vim_plugins:
           # Installed plugins.
           - path: "{{ fact__vim_home_directory }}/.vim/pack/ansible-managed/opt/vdebug"

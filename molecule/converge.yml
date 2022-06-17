@@ -5,7 +5,6 @@
     vim_removed_packages:
       - "vim-tiny"
     vim_owner: "molecule"
-    vim_group: "molecule"
     vim_dotfiles:
       - "{{ playbook_dir }}/files/dotfiles/.vimrc"
   tasks:

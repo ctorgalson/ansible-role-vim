@@ -5,9 +5,6 @@ vim_installed_packages:
   - "vim"
 vim_removed_packages: []
 vim_owner: ""
-vim_group: ""
-# vim_file_mode: "644"
-# vim_dir_mode: "755"
 vim_pack_subdirectory: "ansible-managed"
 vim_installed_plugins: []
 # - repo: "https://github.com/scrooloose/nerdtree.git"

@@ -10,9 +10,9 @@
   changed_when: false
 
 - name: Make sure it even makes sense to continue.
-  ansible.builtin.assert:
-    that: "{{ vim_version_string.stdout is version('8.0', '>=') }}"
+  ansible.builtin.fail:
     msg: "Vim does not support native package management in versions lower than 8.0."
+  when: "{{ vim_version_string.stdout is version('8.0', '<') }}"
 
 - name: Determine home directory.
   ansible.builtin.set_fact:
@@ -38,9 +38,6 @@
   ansible.builtin.file:
     path: "{{ vim_plugin_parent_directory }}/{{ vim_directory }}"
     state: directory
-    owner: "{{ vim_owner }}"
-    group: "{{ vim_group }}"
-    mode: "{{ vim_dir_mode | default('755') }}"
   become: true
   become_user: "{{ vim_owner }}"
   loop:

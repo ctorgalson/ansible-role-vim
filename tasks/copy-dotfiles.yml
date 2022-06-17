@@ -5,9 +5,6 @@
   ansible.builtin.copy:
     src: "{{ dotfile }}"
     dest: "{{ vim_user_home_directory }}/{{ dotfile | basename }}"
-    owner: "{{ vim_owner }}"
-    group: "{{ vim_group }}"
-    mode: "{{ vim_file_mode | default('644') }}"
   become: true
   become_user: "{{ vim_owner }}"
   loop: "{{ vim_dotfiles }}"
