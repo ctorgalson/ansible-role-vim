@@ -23,38 +23,30 @@
         fact__vim_config_files:
           - path: "{{ fact__vim_home_directory }}/.vimrc"
             state: present
-            mode: "0644"
         fact__vim_directories:
           - path: "{{ fact__vim_home_directory }}/.vim/pack/ansible-managed"
             state: present
             type: "directory"
-            mode: "0755"
           - path: "{{ fact__vim_home_directory }}/.vim/pack/ansible-managed/start"
             state: present
             type: "directory"
-            mode: "0755"
           - path: "{{ fact__vim_home_directory }}/.vim/pack/ansible-managed/opt"
             state: present
             type: "directory"
-            mode: "0755"
         fact__vim_plugins:
           # Installed plugins.
           - path: "{{ fact__vim_home_directory }}/.vim/pack/ansible-managed/opt/vdebug"
             state: present
             type: "plugin"
-            mode: "0775"
           - path: "{{ fact__vim_home_directory }}/.vim/pack/ansible-managed/start/vim-airline"
             state: present
             type: "plugin"
-            mode: "0775"
           - path: "{{ fact__vim_home_directory }}/.vim/pack/ansible-managed/start/lightline.vim"
             state: present
             type: "plugin"
-            mode: "0775"
           - path: "{{ fact__vim_home_directory }}/.vim/pack/ansible-managed/start/vim-colors-solarized"
             state: present
             type: "plugin"
-            mode: "0775"
           # Removed plugins.
           - path: "{{ fact__vim_home_directory }}/.vim/pack/ansible-managed/opt/tabular"
             state: absent
