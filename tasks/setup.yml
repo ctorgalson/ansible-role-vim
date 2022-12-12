@@ -5,7 +5,6 @@
   ansible.builtin.shell: "set -o pipefail && (vim --version | head -n1 | awk '{ print $5 }') || test $? -eq 141"
   args:
     executable: "/bin/bash"
-    warn: false
   register: vim_version_string
   changed_when: false
 
