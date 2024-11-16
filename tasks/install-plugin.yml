@@ -5,7 +5,7 @@
 
 - name: Determine plugin name.
   ansible.builtin.set_fact:
-    vim_plugin_name: "{{ (vim_plugin_install.repo | basename | splitext)[0] }}"
+    vim_plugin_name: "{{ vim_plugin_install.name | default((vim_plugin_install.repo | basename | splitext)[0]) }}"
 
 - name: Determine plugin install directory.
   ansible.builtin.set_fact:
