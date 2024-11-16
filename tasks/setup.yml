@@ -6,6 +6,7 @@
   args:
     executable: "/bin/bash"
   register: vim_version_string
+  check_mode: false
   changed_when: false
 
 - name: Make sure it even makes sense to continue.
